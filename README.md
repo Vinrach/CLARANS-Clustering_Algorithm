@@ -1,45 +1,139 @@
-# CLARANS: A Method for Clustering Objects for Spatial Data Mining
-Raymond T. Ng and Jiawei Han, Member, IEEE Computer Society
+# CLARANS Clustering: Randomized Medoid-Based Segmentation
 
-# Description: 
-Re-implemented the CLARANS clustering algorithm in Python for spatial data analysis, using Matplotlib for visualization.
-Demonstrated strong analytical and programming skills in machine learning model training and data mining.
+### A Python Implementation of CLARANS for Data Mining and University Admission Analysis
 
-# Problem Statement:
-In the context of university admissions, it is essential for institutions to understand the patterns and relationships between the number of students applying, the number of acceptance letters issued, and the actual enrollment figure. This can help universities optimize their admission strategies, manage resources, and predict future enrollment trends.
+<p>
+  <img src="https://img.shields.io/badge/Python-3.x-3776AB?style=for-the-badge&logo=python&logoColor=white">
+  <img src="https://img.shields.io/badge/NumPy-Numerical%20Computing-013243?style=for-the-badge&logo=numpy&logoColor=white">
+  <img src="https://img.shields.io/badge/Pandas-Data%20Analysis-150458?style=for-the-badge&logo=pandas&logoColor=white">
+  <img src="https://img.shields.io/badge/Matplotlib-Visualization-11557C?style=for-the-badge&logo=matplotlib&logoColor=white">
+  <img src="https://img.shields.io/badge/Unsupervised%20Learning-Clustering-orange?style=for-the-badge">
+  <img src="https://img.shields.io/badge/Jupyter-Notebook-F37626?style=for-the-badge&logo=jupyter&logoColor=white">
+</p>
 
-The problem involves clustering universities based on two primary factors:
-1. Number of applications accepted by each university.
-2. Number of students who enrolled after receiving acceptance letters.
+---
 
-The goal is to group universities into clusters that exhibit similar behavior in terms of these two variables, helping identify patterns such as which universities have higher conversion rates and which ones struggle with enrollment despite a high number of acceptance letters.
+## 📌 Overview
 
-# Code Explanation:
-1. Data Preprocessing: The data is cleaned by dropping unnecessary columns and any missing values are checked. We create a scatter plot to visualize the relationship between the number of accepted applications and the number of students enrolled
-   
-2. Clarans Algorithm:
-   *  Initialization: Randomly select a set of initial medoids.
-   *  Cluster Assignment: For each medoid, assign data points to the nearest medoid, calculating the Euclidean distance between the points and the medoids.
-   *  Cost Calculation: Calculate the total cost (sum of distances between points and their closest medoid) for the current clustering configuration.
-   *  Randomized Neighbor Search: The algorithm explores random neighboring configurations (by swapping medoids with non-medoids) to see if a better solution (lower cost) can be found. If a better solution is found, it becomes the current solution.
-   *  Iteration: The process is repeated for a fixed number of neighbors and local minima to ensure that a good solution is reached.
-   
-3. Hyperparameter Tuning: A grid search approach is used to identify the best combination of hyperparameters by running the CLARANS algorithm for each combination and comparing the resulting costs.
-   
-4. Best Cluster Identification: After tuning the hyperparameters, the best medoids and cluster assignments are identified. A visualization of the clusters is created.
-   
-5. Results: The optimal number of clusters is determined to be 6, and the best clustering configuration minimizes the overall cost function to 337,643,399.
+This project re-implements the **CLARANS (Clustering Large Applications
+based upon RANdomized Search)** clustering algorithm in Python.
 
-# Observation
-1. More clusters reduce the overall cost because the data points are closer to their assigned medoids (or centroids), making the clustering more compact.
-2. Fewer clusters increase the cost because data points are grouped into larger clusters, and many points will be farther from the medoid, leading to higher distances.
+The implementation is based on the research paper:
 
-# How the Problem Was Solved Using CLARANS:
-By applying the CLARANS algorithm to this dataset, the universities were grouped into distinct clusters based on the relationship between applications accepted and students enrolled. This allowed us to identify patterns and group universities with similar admission behaviors, helping address the problem of understanding how effectively universities convert accepted applicants into enrolled students.
+> **CLARANS: A Method for Clustering Objects for Spatial Data Mining**  
+> Raymond T. Ng and Jiawei Han, Member, IEEE Computer Society
 
-The CLARANS algorithm was particularly useful for this problem because:
-1. Randomized Search: It efficiently explored various potential clusters, allowing us to find a solution that minimizes the overall cost (distance between points and their medoids).
-2. Scalability: Since CLARANS is more scalable than traditional k-medoids, it handled the large dataset well and provided optimal results.
-3. Interpretability: The results of the clustering can be easily interpreted by universities to better manage their admissions process and improve their enrollment rates.# 
+The project applies CLARANS to **university admissions data** to identify
+groups of universities with similar application acceptance and enrollment
+patterns.
 
+The implementation includes:
 
+- Data preprocessing
+- Exploratory data analysis
+- CLARANS clustering from scratch
+- Randomized medoid search
+- Distance-based cost calculation
+- Hyperparameter tuning using grid search
+- Cluster visualization with Matplotlib
+- Interpretation of university admission and enrollment patterns
+
+---
+
+# 🎯 Problem Statement
+
+In the context of university admissions, institutions need to understand
+patterns and relationships between:
+
+1. The number of students applying.
+2. The number of applications accepted.
+3. The number of students who ultimately enroll.
+
+Understanding these relationships can help universities analyze admission
+strategies, manage resources, and identify enrollment patterns.
+
+For this project, universities are clustered primarily using:
+
+- **Number of applications accepted**
+- **Number of students enrolled after acceptance**
+
+The objective is to group universities exhibiting similar admission and
+enrollment behavior.
+
+This allows us to identify patterns such as:
+
+- Universities receiving and accepting large numbers of applications.
+- Universities with relatively high enrollment.
+- Universities with many accepted applicants but comparatively lower enrollment.
+- Universities exhibiting similar admission and enrollment characteristics.
+
+---
+
+# 🧠 Why CLARANS?
+
+CLARANS is a randomized clustering algorithm based on the **k-medoids**
+concept.
+
+Unlike centroid-based clustering approaches, CLARANS uses **medoids**, which
+are actual observations from the dataset, and explores alternative medoid
+configurations through randomized neighborhood search.
+
+The algorithm was selected because it provides:
+
+### Randomized Search
+
+CLARANS explores different possible clustering configurations by randomly
+selecting neighboring solutions.
+
+### Scalability
+
+CLARANS is designed to be more scalable than traditional k-medoids and is
+therefore suitable for larger datasets.
+
+### Interpretability
+
+Because clusters are represented by medoids, the resulting groups can be
+interpreted based on actual observations in the dataset.
+
+---
+
+# ⚙️ CLARANS Algorithm
+
+The implementation follows the following workflow:
+
+```text
+                    Dataset
+                       │
+                       ▼
+              Data Preprocessing
+                       │
+                       ▼
+             Random Medoid Selection
+                       │
+                       ▼
+               Cluster Assignment
+                       │
+                       ▼
+                Cost Calculation
+                       │
+                       ▼
+             Random Neighbor Search
+                       │
+                  ┌────┴────┐
+                  │         │
+             Better Cost?   │
+                  │         │
+                 Yes        No
+                  │         │
+                  ▼         │
+          Update Medoids    │
+                  │         │
+                  └────┬────┘
+                       ▼
+                Repeat Search
+                       │
+                       ▼
+              Best Configuration
+                       │
+                       ▼
+              Cluster Visualization
